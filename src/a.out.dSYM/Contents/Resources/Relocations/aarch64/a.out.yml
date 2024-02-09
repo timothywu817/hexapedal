@@ -2,13 +2,13 @@
 triple:          'arm64-apple-darwin'
 binary-path:     a.out
 relocations:
-  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _reset_legs, symObjAddr: 0x0, symBinAddr: 0x100003988, symSize: 0x94 }
-  - { offsetInCU: 0x41, offset: 0x41, size: 0x8, addend: 0x0, symName: _reset_legs, symObjAddr: 0x0, symBinAddr: 0x100003988, symSize: 0x94 }
-  - { offsetInCU: 0x9D, offset: 0x9D, size: 0x8, addend: 0x0, symName: _spi, symObjAddr: 0x94, symBinAddr: 0x100003A1C, symSize: 0xC4 }
-  - { offsetInCU: 0xF9, offset: 0xF9, size: 0x8, addend: 0x0, symName: _inverse_kinematics, symObjAddr: 0x158, symBinAddr: 0x100003AE0, symSize: 0x90 }
-  - { offsetInCU: 0x147, offset: 0x147, size: 0x8, addend: 0x0, symName: _lift_down, symObjAddr: 0x1E8, symBinAddr: 0x100003B70, symSize: 0xB0 }
-  - { offsetInCU: 0x1A3, offset: 0x1A3, size: 0x8, addend: 0x0, symName: _set_legs, symObjAddr: 0x298, symBinAddr: 0x100003C20, symSize: 0x1D8 }
-  - { offsetInCU: 0x21B, offset: 0x21B, size: 0x8, addend: 0x0, symName: _control, symObjAddr: 0x480, symBinAddr: 0x100003E08, symSize: 0x9C }
-  - { offsetInCU: 0x26, offset: 0x367, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003EA4, symSize: 0x44 }
-  - { offsetInCU: 0x41, offset: 0x382, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003EA4, symSize: 0x44 }
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _reset_legs, symObjAddr: 0x0, symBinAddr: 0x100003974, symSize: 0x94 }
+  - { offsetInCU: 0x41, offset: 0x41, size: 0x8, addend: 0x0, symName: _reset_legs, symObjAddr: 0x0, symBinAddr: 0x100003974, symSize: 0x94 }
+  - { offsetInCU: 0x9D, offset: 0x9D, size: 0x8, addend: 0x0, symName: _spi, symObjAddr: 0x94, symBinAddr: 0x100003A08, symSize: 0xC4 }
+  - { offsetInCU: 0xF9, offset: 0xF9, size: 0x8, addend: 0x0, symName: _inverse_kinematics, symObjAddr: 0x158, symBinAddr: 0x100003ACC, symSize: 0x90 }
+  - { offsetInCU: 0x147, offset: 0x147, size: 0x8, addend: 0x0, symName: _lift_down, symObjAddr: 0x1E8, symBinAddr: 0x100003B5C, symSize: 0xB0 }
+  - { offsetInCU: 0x1A3, offset: 0x1A3, size: 0x8, addend: 0x0, symName: _set_legs, symObjAddr: 0x298, symBinAddr: 0x100003C0C, symSize: 0x1D8 }
+  - { offsetInCU: 0x21B, offset: 0x21B, size: 0x8, addend: 0x0, symName: _control, symObjAddr: 0x480, symBinAddr: 0x100003DF4, symSize: 0xA4 }
+  - { offsetInCU: 0x26, offset: 0x367, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003E98, symSize: 0x44 }
+  - { offsetInCU: 0x41, offset: 0x382, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x0, symBinAddr: 0x100003E98, symSize: 0x44 }
 ...

@@ -76,11 +76,10 @@ void control(int dir){
         printf("Invalid direction\n");
         return;
     }
-    
     //give each leg and each servo with the default angle
-    robot hexapedal;
-    reset_legs(&hexapedal);//set the legs to zero
-    set_legs(&hexapedal);
-    spi(&hexapedal);
+    robot *hexapedal = malloc(sizeof(robot));
+    reset_legs(hexapedal);//set the legs to zero
+    set_legs(hexapedal);
+    spi(hexapedal);
     
 }
