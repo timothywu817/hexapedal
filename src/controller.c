@@ -1,61 +1,86 @@
 #include "controller.h"
-
-
-void spi(int leg_num, leg* legx, bool ready){
-        printf("%f for leg %d servo 1, %d\n",legx->servo_1_angle, leg_num,ready);
-        printf("%f for leg %d servo 2, %d\n",legx->servo_2_angle, leg_num,ready);
-        printf("%f for leg %d servo 3, %d\n",legx->servo_3_angle, leg_num,ready);
-        printf("%f for leg %d servo 4, %d\n",legx->servo_4_angle, leg_num,!ready);
+//set leg to zero position
+void reset_legs(robot* hexapedal){
+    for(int i = 0; i < 6; i++){
+        for(int j = 0; j < 4; j++){
+            hexapedal->legs[i]->servo_angles_concatenation->servo_angles[j] = 0;
+        }
+    }
+    hexapedal->phase = 0;
 }
 
-void inverse_kinematics(leg* leg1,  coord dest){
-    leg1->servo_1_angle += 15/M_PI;
-    leg1->servo_2_angle += 60/M_PI;
-    leg1->servo_3_angle += 100/M_PI;
-    leg1->servo_4_angle -= 70/M_PI;
+
+void spi(robot *hexapedal){
+        for(int i = 0; i < 6; i++){
+            for(int j = 0; j < 4; j++){
+                printf("leg %d servo %d rotate to %f\n",i,j,hexapedal->legs[i]->servo_angles_concatenation->servo_angles[j]);
+            }
+        }
+        
+        
+
 }
 
-void moving_around(coord dest, leg* leg1,leg* leg2,leg* leg3){
-    inverse_kinematics(leg1, dest);
-    spi(1, leg1, 0);
+void inverse_kinematics(float* servo_angles, coord dest){
+    for(int i = 0; i < 4; i ++){
+        servo_angles[i] += (dest.x + dest.y + dest.z) * i;
+    }
+}
+
+void lift_down(robot* hexapedal,bool upOrDown,int index){
+    coord dest_up = {0, 0, 50};
+    coord dest_down = {0, 0, -50};
+    if(upOrDown){
+        inverse_kinematics(hexapedal->legs[index]->servo_angles_concatenation->servo_angles, dest_up);
+    }
+    else{
+        inverse_kinematics(hexapedal->legs[index]->servo_angles_concatenation->servo_angles, dest_down);
+    }
+
+}
+
+
+void set_legs(robot* hexapedal){
+    int tripod = hexapedal->phase % 2;
+    coord move_dest = {0,0,0};
+    switch(hexapedal->dir){
+        case 0:{
+            move_dest.x += 50;//forward
+        }
+        break;
+        case 1:{
+            move_dest.x -= 50;//backward
+        }
+        break;
+        case 2:{
+            move_dest.y -= 50;//left
+        }
+        break;
+        case 3:{
+            move_dest.y += 50;//right
+        }
+        break;
+    }
+    for(int i = 0; i < 6; i++){
+        if((i % 2) == tripod){
+            lift_down(hexapedal, 1, i);
+            coord dest = {hexapedal->legs[i]->default_coord.x + move_dest.x, hexapedal->legs[i]->default_coord.y + move_dest.y, hexapedal->legs[i]->default_coord.z + move_dest.z};
+            inverse_kinematics(hexapedal->legs[i]->servo_angles_concatenation->servo_angles, dest);
+        }
+        hexapedal->phase = 1 - hexapedal->phase;
+    }
 }
 
 void control(int dir){
-    leg* left_front = malloc(sizeof(leg));
-    leg* left_mid = malloc(sizeof(leg));
-    leg* left_back = malloc(sizeof(leg));
-    leg* right_front = malloc(sizeof(leg));
-    leg* right_mid = malloc(sizeof(leg));
-    leg* right_back = malloc(sizeof(leg));
-    //give each leg and each servo with the default angle
-    left_front->default_coord.x = -250;
-    left_front->default_coord.y = 331;
-    left_front->default_coord.z = 5;
-    left_front->servo_1_angle = 15;
-    left_front->servo_2_angle = 5;
-    left_front->servo_3_angle = 133.131203-180;
-    left_front->servo_4_angle = 180-37.164102;
-    // left_mid ->default_coord.x = -305.07;
-    // left_mid ->default_coord.y = -82.11;
-    // left_mid ->default_coord.z = -133.33;
-    // left_back ->default_coord.x = -251.99;
-    // left_back ->default_coord.y = -368.37;
-    // left_back ->default_coord.z = -130.24;
-
-
-    //designed the landpoint for moving forward
-    coord dest;
-    dest.x = 0;
-    dest.y = 0;
-    dest.z = 0;
-    coord dest_forward = {0, 115.7, 0};
-    coord dest_backward = {0, -115.7, 0};
-    switch(dir){
-        case 0: {
-            moving_around(dest_forward,left_front, left_back, right_mid);
-            // moving_around(dest_backward,left_front, left_back, right_mid);
-            // moving_around(dest_forward, left_mid, right_front, right_back);
-            // moving_around(dest_backward, left_mid, right_front, right_back);
-        }
+    if(dir != 0 && dir != 1 && dir != 2 && dir !=3){
+        printf("Invalid direction\n");
+        return;
     }
+    
+    //give each leg and each servo with the default angle
+    robot hexapedal;
+    reset_legs(&hexapedal);//set the legs to zero
+    set_legs(&hexapedal);
+    spi(&hexapedal);
+    
 }

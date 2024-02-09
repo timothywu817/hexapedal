@@ -1,5 +1,10 @@
 #include "controller.h"
 
 int main(){
-    control(0);
+    while(true){
+        int dir;
+        printf("Where do you wanna go?\n");
+        scanf("%d", &dir);
+        control(dir);
+    }
 }

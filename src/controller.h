@@ -4,22 +4,32 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <math.h>
+ 
 typedef struct{
     double x;
     double y;
     double z;
 }coord;
 
+typedef struct{
+    float servo_angles[4];
+}angles;
+
 typedef struct
 {
-    float servo_1_angle;
-    float servo_2_angle;
-    float servo_3_angle;
-    float servo_4_angle;
+    angles *servo_angles_concatenation;
     coord default_coord;
 
 }leg;
-void inverse_kinematics(leg* legx,  coord dest);
-void control(int dir);
 
+typedef struct{
+    leg* legs[6];
+    int phase;
+    int dir;
+}robot;
+
+void inverse_kinematics(float* servo_angles, coord dest);
+void control(int dir);
+void lift(robot* hexapedal);
+void land(robot* hexapedal);
 #endif
