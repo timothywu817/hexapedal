@@ -11,13 +11,9 @@ typedef struct{
     double z;
 }coord;
 
-typedef struct{
-    float servo_angles[4];
-}angles;
-
 typedef struct
 {
-    angles *servo_angles_concatenation;
+    float servo_angles[4];
     coord default_coord;
 
 }leg;
