@@ -66,10 +66,28 @@ void set_legs(robot* hexapedal){
         break;
     }
     printf("%f %f %f\n",move_dest.x,move_dest.y,move_dest.z);
-    
+    //move the first set of legs
     for(int i = 0; i < 6; i++){
         if((i % 2) == tripod){
-            // printf("leg %d \n",i);
+            printf("leg %d \n",i);
+            lift_up_down(hexapedal, 1, i);//lift
+            coord dest = {hexapedal->legs[i]->default_coord.x + move_dest.x, hexapedal->legs[i]->default_coord.y + move_dest.y, hexapedal->legs[i]->default_coord.z + move_dest.z};
+            printf("%f %f %f",dest.x,dest.y,dest.z);
+            inverse_kinematics(hexapedal->legs[i]->servo_angles, dest);
+            lift_up_down(hexapedal, 0, i);//land
+            coord dest_back = {hexapedal->legs[i]->default_coord.x - move_dest.x, hexapedal->legs[i]->default_coord.y - move_dest.y, hexapedal->legs[i]->default_coord.z - move_dest.z};
+            printf("%f %f %f\n",dest_back.x,dest_back.y,dest_back.z);
+
+            inverse_kinematics(hexapedal->legs[i]->servo_angles, dest_back);
+            // spi(hexapedal);
+        }
+        hexapedal->phase = 1 - hexapedal->phase;
+
+    }
+    //move the rest legs
+    for(int i = 0; i < 6; i++){
+        if((i % 2) != tripod){
+            printf("leg %d \n",i);
             lift_up_down(hexapedal, 1, i);//lift
             coord dest = {hexapedal->legs[i]->default_coord.x + move_dest.x, hexapedal->legs[i]->default_coord.y + move_dest.y, hexapedal->legs[i]->default_coord.z + move_dest.z};
             printf("%f %f %f",dest.x,dest.y,dest.z);
@@ -109,4 +127,5 @@ void control(int dir){
     hexapedal.dir = dir;
     reset_legs(&hexapedal);//set the legs to zero
     set_legs(&hexapedal);
+    // set_legs(&hexapedal);
 }
